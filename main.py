@@ -1,14 +1,14 @@
 import argparse
 from scapy.all import AsyncSniffer, get_if_list, conf
 from threading import Thread, Lock, Event
-from packet_parsers import parse_ethernet_header
+from parsers.parse_header import parse_header
 import socket
 import psutil
 
 # Suppress Scapy warnings
 conf.logLevel = "ERROR"
 
-# Shared counter, lock, and stop event for global packet handling
+# Shared counter, loccapture_on_all_interfacesk, and stop event for global packet handling
 packet_counter = 0
 counter_lock = Lock()
 stop_event = Event()
@@ -19,12 +19,17 @@ global_packet_limit = 0
 def packet_callback(packet):
     global packet_counter
     with counter_lock:
+
         if packet_counter < global_packet_limit:
             packet_counter += 1
-            print(f"\nCaptured Packet {packet_counter}:")
+
+            # Prep and parse data
             raw_data = bytes(packet)
             hex_data = raw_data.hex()
-            ether_type, payload = parse_ethernet_header(hex_data)
+            print(f"Captured Packet {packet_counter}: \n")
+            res, payload = parse_header(hex_data)
+
+            # Print to console
 
             # Stop capturing if the limit is reached
             if packet_counter >= global_packet_limit:
@@ -55,8 +60,10 @@ def has_global_ip(interface):
             for addr in addrs[interface]:
                 # Check for IPv4 and IPv6 addresses
                 if addr.family == socket.AF_INET and not addr.address.startswith("169.254"):
+                    print("FOUND GLOBAL IP FOR IPV4")
                     return True
                 if addr.family == socket.AF_INET6 and not addr.address.startswith("fe80"):
+                    print("FOUND GLOBAL IP FOR IPV6")
                     return True
     except Exception as e:
         pass
@@ -66,6 +73,7 @@ def has_global_ip(interface):
 # Capture packets on a specific interface
 def capture_packets(interface, capture_filter):
     print(f"Starting packet capture on {interface} with filter: {capture_filter or 'None (all packets)'}")
+    capture_filter =str(capture_filter)
     try:
         sniffer = AsyncSniffer(
             iface=interface,
@@ -77,6 +85,7 @@ def capture_packets(interface, capture_filter):
         sniffer.start()
         while not stop_event.is_set():
             pass
+
         if sniffer.running:  # Only stop if it's still running
             sniffer.stop()
     except KeyboardInterrupt:
@@ -104,7 +113,6 @@ def capture_on_all_interfaces(capture_filter, packet_count):
         if not has_global_ip(interface):
             continue
 
-        print(f"Starting packet capture on {interface}")
         thread = Thread(target=capture_packets, args=(interface, capture_filter))
         thread.start()
         threads.append(thread)
@@ -134,7 +142,7 @@ if __name__ == "__main__":
         "-c", "--count", type=int, required=True, help="Number of packets to capture (default: 1)"
     )
     args = parser.parse_args()
-
+    print(args.interface.lower())
     if args.interface.lower() == "any":
         capture_on_all_interfaces(args.filter, args.count)
     else:
