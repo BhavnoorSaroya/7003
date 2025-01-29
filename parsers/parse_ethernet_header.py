@@ -14,9 +14,8 @@ def parse_ethernet_header(hex_data):
     print(f"  {'EtherType:':<25} {ether_type:<20} | {int(ether_type, 16)}")
 
     payload = hex_data[28:]
-    print("EITHER TYPE")
-    print(ether_type)
 
+    
     # Route payload based on EtherType
     if ether_type == "0806":  # ARP
         parse_arp_header(payload)
