@@ -1,4 +1,8 @@
 def parse_dns(hex_data):
+    print("PARSE DNS")
+    print(type(hex_data))
+    print(hex_data)
+    print("here")
     transaction_id = hex_data[0:4]
     flags = hex_data[4:8]
     questions = hex_data[8:12]
