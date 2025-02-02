@@ -18,11 +18,8 @@ def parse_ipv4(hex_data):
     source_ip = hex_data[24:32]
     dest_ip = hex_data[32:40]
     # payload = hex_data[40:]
-    
-    print("payload size", int(total_length, 16) - int(i_header_length, 16))
-    
+        
     payload_start = 40 + ((int(i_header_length, 16) - 5) * 8)
-    print(payload_start)
     payload = hex_data[payload_start:]
 
     binFF = int(flags_and_frag, 16) #convert flags and frag to binary
