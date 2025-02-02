@@ -48,7 +48,7 @@ def parse_tcp(hex_data):
     print(f"  {'Urgent Pointer:':<25} {urgent_pointer:<20} | {int(urgent_pointer, 16)}")
 
 
-    if int(destination, 16) == 53:
+    if int(destination, 16) == 53 or int(source, 16) == 53:
         parse_dns(payload)
     
     return "HELLO TCP"
