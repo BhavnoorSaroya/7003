@@ -103,7 +103,6 @@ def capture_packets(interface, capture_filter):
 
 # Capture packets on all interfaces
 def capture_on_all_interfaces(capture_filter, packet_count):
-    print("HELLO WORLD 2")
     global global_packet_limit
     global_packet_limit = packet_count
 
