@@ -50,11 +50,11 @@ def parse_ipv4(hex_data):
     protocol_int = int(protocol, 16)
     # Route payload based on EtherType
     if protocol_int == ICMP_VALUE:  # ARP
-        print(parse_icmp(payload))
+        parse_icmp(payload)
     elif protocol_int == UDP_VALUE:
-        print(parse_udp(payload))
+        parse_udp(payload)
     elif protocol_int == TCP_VALUE:
-        print(parse_tcp(payload))
+        parse_tcp(payload)
     else:    
         print(f"  {'Unknown Protocol:':<25} {protocol:<20} | {protocol_int}")
         print("  No parser available for this Protocol.")

@@ -20,12 +20,10 @@ def parse_tcp(hex_data):
     flags = (int(reserved_flags, 16) & 0b000111111111)
     reserved_str = format((int(reserved_flags, 16) & 0b111000000000 >> 9), '03b')
     flags_str = format((int(reserved_flags, 16) & 0b000111111111),  '09b')
-    print("payload start", payload_start)
-    print(flags)
-    print(flags_str)
-    # print("payload", payload)
-    # hex_data[39:40]
     
+ 
+
+
     print(f"TCP Header:")
     print(f"  {'Source Port:':<25} {source:<20} | {int(source, 16)}")
     print(f"  {'Destination Port:':<25} {destination:<20} | {int(destination, 16)}")
