@@ -23,7 +23,7 @@ def parse_tcp(hex_data):
     print("payload start", payload_start)
     print(flags)
     print(flags_str)
-    print("payload", payload)
+    # print("payload", payload)
     # hex_data[39:40]
     
     print(f"TCP Header:")
@@ -51,4 +51,3 @@ def parse_tcp(hex_data):
     if int(destination, 16) == 53 or int(source, 16) == 53:
         parse_dns(payload)
     
-    return "HELLO TCP"

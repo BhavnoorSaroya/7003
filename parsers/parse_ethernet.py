@@ -3,7 +3,7 @@ from parsers.parse_ipv4 import parse_ipv4
 
 # Parse Ethernet header
 def parse_ethernet(hex_data):
-    print("whole packet", hex_data)
+    # print("whole packet", hex_data)
     dest_mac = ':'.join(hex_data[i:i+2] for i in range(0, 12, 2))
     source_mac = ':'.join(hex_data[i:i+2] for i in range(12, 24, 2))
     ether_type = hex_data[24:28]

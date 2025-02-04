@@ -10,5 +10,3 @@ def parse_icmp(hex_data):
     print(f"  {"Checksum":<25} {checksum:<20} | {int(checksum, 16)}")
     print(f"  {'Payload (hex)':<25} {payload}")
 
-    return "HELLO ICMP"
-
